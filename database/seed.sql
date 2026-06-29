@@ -1,0 +1,1 @@
+﻿-- seed.sql: Datos de prueba iniciales (categorias, productos, usuario admin, ruta de entrega)

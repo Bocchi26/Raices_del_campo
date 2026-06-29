@@ -1,0 +1,1 @@
+﻿-- schema.sql: DDL de tablas y tipos de la base de datos PostgreSQL

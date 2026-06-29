@@ -1,0 +1,1 @@
+﻿-- views.sql: Vistas SQL para reportes y analiticas del panel de administracion
