@@ -1,4 +1,4 @@
-﻿﻿// order.routes.js: POST /api/orders | GET /api/orders/my | GET /api/orders/:id
+// order.routes.js: POST /api/orders | GET /api/orders/my | GET /api/orders/:id
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -47,7 +47,6 @@ router.post('/api/orders', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
 // GET /api/orders/my - pedidos del usuario autenticado
 router.get('/api/orders/my', authMiddleware, async (req, res) => {
   try {
@@ -113,3 +112,5 @@ router.patch('/api/orders/:id/cancel', authMiddleware, async (req, res) => {
     return res.status(500).json({ error: 'Error interno al cancelar el pedido.' });
   }
 });
+
+module.exports = router;
