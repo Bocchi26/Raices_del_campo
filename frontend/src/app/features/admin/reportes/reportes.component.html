@@ -1,1 +1,120 @@
 ﻿<!-- reportes.component.html: Template de reportes y estadisticas -->
+<div class="contenedor-reportes">
+
+    <h2>Reporte de Ventas</h2>
+
+    <div class="filtros">
+
+        <label>Fecha inicio</label>
+        <input type="date" [(ngModel)]="fechaInicio">
+
+        <label>Fecha fin</label>
+        <input type="date" [(ngModel)]="fechaFin">
+
+        <button (click)="consultarReporte()">
+            Consultar
+        </button>
+
+        <button (click)="imprimir()">
+            Exportar / Imprimir
+        </button>
+
+    </div>
+
+    <div *ngIf="reporte">
+
+        <h3>Resumen</h3>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h4>Total pedidos</h4>
+
+                <p>{{ reporte.resumen.total_pedidos }}</p>
+
+            </div>
+
+            <div class="card">
+
+                <h4>Ingresos Totales</h4>
+
+                <p>${{ reporte.resumen.ingresos_totales }}</p>
+
+            </div>
+
+        </div>
+
+        <h3>Productos Más Vendidos</h3>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Producto</th>
+
+                    <th>Cantidad</th>
+
+                    <th>Ingreso</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let producto of reporte.productos_mas_vendidos">
+
+                    <td>{{ producto.nombre }}</td>
+
+                    <td>{{ producto.total_vendido }}</td>
+
+                    <td>${{ producto.ingreso_generado }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <h3>Pedidos por Estado</h3>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Estado</th>
+
+                    <th>Total</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let estado of reporte.pedidos_por_estado">
+
+                    <td>{{ estado.estado }}</td>
+
+                    <td>{{ estado.total }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div *ngIf="reporte && reporte.resumen.total_pedidos == 0">
+
+        <p>No existen ventas para el período seleccionado.</p>
+
+    </div>
+
+</div>
