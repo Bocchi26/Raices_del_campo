@@ -1,1 +1,97 @@
 ﻿<!-- gestion-pedidos.component.html: Template de gestion de pedidos -->
+<h2>Gestión de Pedidos</h2>
+
+<div class="filtro">
+
+    <label>Estado</label>
+
+    <select
+        [(ngModel)]="estadoSeleccionado"
+        (change)="filtrarEstado()">
+
+        <option value="">Todos</option>
+        <option value="pendiente_pago">Pendiente Pago</option>
+        <option value="en_preparacion">En Preparación</option>
+        <option value="en_camino">En Camino</option>
+        <option value="entregado">Entregado</option>
+        <option value="cancelado">Cancelado</option>
+
+    </select>
+
+</div>
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Fecha Pedido</th>
+            <th>Entrega</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let pedido of pedidos">
+
+            <td>#{{pedido.id_pedido}}</td>
+
+            <td>{{pedido.nombre_cliente}}</td>
+
+            <td>{{pedido.fecha_pedido | date}}</td>
+
+            <td>{{pedido.fecha_entrega}}</td>
+
+            <td>{{pedido.total | currency}}</td>
+
+            <td>
+
+                <span
+                class="estado"
+                [ngClass]="pedido.estado">
+
+                    {{pedido.estado}}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    *ngIf="pedido.estado=='en_preparacion'"
+                    (click)="cambiarEstado(pedido.id_pedido,'en_camino')">
+
+                    Marcar como En Camino
+
+                </button>
+
+                <button
+                    *ngIf="pedido.estado=='en_camino'"
+                    (click)="cambiarEstado(pedido.id_pedido,'entregado')">
+
+                    Marcar como Entregado
+
+                </button>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+<div *ngIf="!cargando && pedidos.length==0">
+
+    No existen pedidos.
+
+</div>

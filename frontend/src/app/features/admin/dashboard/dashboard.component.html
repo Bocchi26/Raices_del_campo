@@ -1,1 +1,96 @@
 ﻿<!-- dashboard.component.html: Template del dashboard de administracion -->
+<div class="dashboard-container">
+
+    <h1>Panel de Administración</h1>
+
+    <p class="subtitulo">
+        Resumen general del sistema
+    </p>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icono">📦</div>
+
+            <h3>Pedidos del día</h3>
+
+            <h2>{{ totalPedidosHoy }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icono">💰</div>
+
+            <h3>Ingresos del día</h3>
+
+            <h2>{{ formatearPesos(ingresosHoy) }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icono">⚠️</div>
+
+            <h3>Stock bajo</h3>
+
+            <h2>{{ productosStockBajo }}</h2>
+
+        </div>
+
+        <div class="card">
+
+            <div class="icono">🚚</div>
+
+            <h3>Pendientes de despacho</h3>
+
+            <h2>{{ pedidosPendientes }}</h2>
+
+        </div>
+
+    </div>
+
+    <div
+        class="cargando"
+        *ngIf="cargando">
+
+        <p>Cargando información...</p>
+
+    </div>
+
+    <div class="accesos">
+
+        <h2>Accesos rápidos</h2>
+
+        <div class="botones">
+
+            <a
+                routerLink="/admin/productos"
+                class="btn">
+
+                📦 Gestión de Productos
+
+            </a>
+
+            <a
+                routerLink="/admin/pedidos"
+                class="btn">
+
+                📋 Gestión de Pedidos
+
+            </a>
+
+            <a
+                routerLink="/admin/reportes"
+                class="btn">
+
+                📊 Reportes
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

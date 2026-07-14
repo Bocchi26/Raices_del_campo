@@ -59,5 +59,7 @@ export class AdminService {
       { params }
     );
   }
-
+  obtenerCategorias(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/categories`);
+}
 }
