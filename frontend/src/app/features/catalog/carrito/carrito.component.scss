@@ -1,1 +1,62 @@
 ﻿// carrito.component.scss: Estilos del carrito de compras
+.contenedor{
+
+    padding:30px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+th,td{
+
+    border:1px solid #ddd;
+
+    padding:12px;
+
+}
+
+th{
+
+    background:#365004;
+
+    color:white;
+
+}
+
+button{
+
+    padding:10px 18px;
+
+    margin:10px;
+
+    background:#365004;
+
+    color:white;
+
+    border:none;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+button:disabled{
+
+    background:gray;
+
+}
+
+input{
+
+    width:60px;
+
+}

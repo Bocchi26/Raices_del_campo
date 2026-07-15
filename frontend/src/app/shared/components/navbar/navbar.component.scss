@@ -1,1 +1,60 @@
 ﻿// navbar.component.scss: Estilos de la barra de navegacion
+.navbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 40px;
+
+    background:#365004;
+
+    color:white;
+
+}
+
+.menu{
+
+    display:flex;
+
+    list-style:none;
+
+    gap:20px;
+
+}
+
+.menu a{
+
+    color:white;
+
+    text-decoration:none;
+
+}
+
+.usuario{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+button{
+
+    background:#8DA432;
+
+    border:none;
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
