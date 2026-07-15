@@ -72,6 +72,14 @@ export class RegistroComponent {
         ]
       ],
 
+      confirmarPassword: [
+        '',
+        [
+            Validators.required,
+            Validators.minLength(6)
+        ]
+        ],
+
 
       telefono: [
         '',
@@ -106,10 +114,23 @@ export class RegistroComponent {
 
     }
 
+    const datos = this.registroForm.value;
 
-    this.authService.register(
-      this.registroForm.value
-    )
+
+    if (datos.password !== datos.confirmarPassword) {
+
+    this.errorMensaje = 'Las contraseñas no coinciden';
+
+    return;
+
+    }
+
+    const {
+    confirmarPassword,
+    ...registro
+    } = datos;
+
+    this.authService.register(registro)
     .subscribe({
 
       next:(response)=>{
