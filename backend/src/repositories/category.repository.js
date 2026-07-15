@@ -1,17 +1,9 @@
-﻿// category.repository.js: Consultas SQL sobre la tabla categorias
-const pool = require("../database/connection");
+﻿const db = require('../config/db'); // Asumiendo conexión pg
 
-async function findAll(){
-
-    const result = await pool.query(
-        `SELECT *
-        FROM categories`
-    );
-
-    return result.rows;
-
-}
-
-module.exports={
-    findAll
+const findAll = async () => {
+const query = 'SELECT * FROM categorias';
+const { rows } = await db.query(query);
+return rows;
 };
+
+module.exports = { findAll };

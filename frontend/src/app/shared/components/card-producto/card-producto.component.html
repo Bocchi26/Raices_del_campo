@@ -1,1 +1,17 @@
 ﻿<!-- card-producto.component.html: Template de la tarjeta de producto -->
+<div class="card">
+<img [src]="producto.imagen_url || placeholderImage" 
+    [alt]="producto.nombre"
+    class="card-img">
+
+<div class="card-body">
+    <h3>{{ producto.nombre }}</h3>
+    <p class="precio">{{ producto.precio | currency:'COP':'symbol':'1.0-0' }}</p>
+    <p><strong>Origen:</strong> {{ producto.origen }}</p>
+    <p><strong>Unidad:</strong> {{ producto.unidadMedida }}</p>
+    
+    <button (click)="onAgregarClick()" class="btn-agregar">
+    Agregar al carrito
+    </button>
+</div>
+</div>

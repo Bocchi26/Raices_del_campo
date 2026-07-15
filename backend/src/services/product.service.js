@@ -1,27 +1,23 @@
-﻿// product.service.js: Logica de catalogo, stock y gestion de productos
-const productRepository = require("../repositories/product.repository");
+﻿const productRepo = require('../repositories/product.repository');
 
-async function getProducts(categoriaId){
-
-    return await productRepository.findAll(categoriaId);
-
-}
-
-async function getProductById(id){
-
-    const product = await productRepository.findById(id);
-
-    if(!product){
-
-        throw new Error("Producto no encontrado");
-
-    }
-
-    return product;
-
-}
-
-module.exports={
-    getProducts,
-    getProductById
+const getProducts = async (req, res) => {
+  try {
+    const { categoria } = req.query;
+    const productos = await productRepo.findAll(categoria);
+    res.json(productos);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener productos' });
+  }
 };
+
+const getProductById = async (req, res) => {
+  try {
+    const producto = await productRepo.findById(req.params.id);
+    if (!producto) return res.status(404).json({ message: 'Producto no encontrado' });
+    res.json(producto);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el producto' });
+  }
+};
+
+module.exports = { getProducts, getProductById };

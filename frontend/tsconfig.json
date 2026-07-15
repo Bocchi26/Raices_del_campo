@@ -1,8 +1,6 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+"compileOnSave": false,
+"compilerOptions": {
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "bundler",
@@ -15,10 +13,10 @@
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "types": []
-  },
-  "angularCompilerOptions": {
+},
+"angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+}
 }

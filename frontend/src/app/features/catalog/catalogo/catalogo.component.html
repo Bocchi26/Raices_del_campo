@@ -1,1 +1,30 @@
 ﻿<!-- catalogo.component.html: Template del catalogo de productos -->
+<div class="lista-productos">
+  <app-card-producto 
+    *ngFor="let prod of productos" 
+    [producto]="prod"
+    (agregar)="manejarAgregarAlCarrito($event)">
+  </app-card-producto>
+</div>
+
+
+<div class="catalog-controls">
+  <input type="text" [(ngModel)]="busqueda" (input)="aplicarFiltroBusqueda()" placeholder="Buscar por nombre...">
+  
+  <select [(ngModel)]="categoriaSeleccionada" (change)="filtrarPorCategoria()">
+    <option value="">Todas las categorías</option>
+    <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</option>
+  </select>
+</div>
+
+<div class="grid" *ngIf="productosFiltrados.length > 0; else noProductos">
+  <app-card-producto 
+    *ngFor="let prod of productosFiltrados" 
+    [producto]="prod"
+    (agregar)="manejarAgregarAlCarrito($event)">
+  </app-card-producto>
+</div>
+
+<ng-template #noProductos>
+  <p class="empty-msg">No se encontraron productos disponibles.</p>
+</ng-template>

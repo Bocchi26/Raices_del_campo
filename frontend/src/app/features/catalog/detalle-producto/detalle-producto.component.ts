@@ -5,39 +5,39 @@ import { ProductService } from '@services/product.service';
 import { CartService } from '@services/cart.service';
 
 @Component({
-  selector: 'app-detalle-producto',
-  templateUrl: './detalle-producto.component.html'
+selector: 'app-detalle-producto',
+templateUrl: './detalle-producto.component.html'
 })
 export class DetalleProductoComponent implements OnInit {
-  producto: any;
-  cantidad: number = 1;
-  mensaje: string = '';
+producto: any;
+cantidad: number = 1;
+mensaje: string = '';
 
-  constructor(
+constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private cartService: CartService
-  ) {}
+) {}
 
-  ngOnInit(): void {
+ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.productService.getProductById(id).subscribe({
+    this.productService.getProductById(id).subscribe({
         next: (data) => this.producto = data,
         error: () => this.redirigirAlCatalogo()
-      });
+    });
     }
-  }
+}
 
-  agregarAlCarrito(): void {
+agregarAlCarrito(): void {
     this.cartService.addToCart(this.producto, this.cantidad);
     this.mensaje = '¡Producto agregado correctamente!';
     setTimeout(() => this.mensaje = '', 3000); // Limpiar mensaje tras 3s
-  }
+}
 
-  private redirigirAlCatalogo(): void {
+private redirigirAlCatalogo(): void {
     alert('Producto no disponible.');
     this.router.navigate(['/catalog']);
-  }
+}
 }
