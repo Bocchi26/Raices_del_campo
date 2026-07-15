@@ -1,1 +1,24 @@
 ﻿// auth.guard.ts: Guard funcional que verifica autenticacion antes de activar una ruta
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
+
+
+export const authGuard: CanActivateFn = () => {
+
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+
+  if (authService.isLoggedIn()) {
+
+    return true;
+
+  }
+
+
+  router.navigate(['/auth/login']);
+
+  return false;
+
+};
