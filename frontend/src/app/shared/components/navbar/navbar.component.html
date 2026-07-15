@@ -1,1 +1,43 @@
 ﻿<!-- navbar.component.html: Template de la barra de navegacion -->
+<nav class="navbar">
+
+    <div class="logo">
+        🌿 Raíces del Campo
+    </div>
+
+    <ul class="menu">
+
+        <li><a routerLink="/">Inicio</a></li>
+
+        <li><a routerLink="/catalog">Catálogo</a></li>
+
+        <li><a routerLink="/orders">Pedidos</a></li>
+
+        <li *ngIf="isAdmin">
+            <a routerLink="/admin">Administración</a>
+        </li>
+
+    </ul>
+
+    <div class="usuario">
+
+        <span *ngIf="isLogged">
+            Hola {{ usuario }}
+        </span>
+
+        <button *ngIf="isLogged"
+                (click)="logout()">
+
+            Cerrar sesión
+
+        </button>
+
+        <div class="carrito">
+
+            🛒 {{ cantidad }}
+
+        </div>
+
+    </div>
+
+</nav>

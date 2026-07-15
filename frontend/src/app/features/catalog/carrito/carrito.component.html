@@ -1,1 +1,109 @@
 ﻿<!-- carrito.component.html: Template del carrito de compras -->
+<div class="contenedor">
+
+    <h2>Mi Carrito</h2>
+
+    <div *ngIf="carrito.length > 0">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let producto of carrito">
+
+                    <td>{{ producto.nombre }}</td>
+
+                    <td>
+
+                        {{ producto.precio | currencyCop }}
+
+                    </td>
+
+                    <td>
+
+                        <input
+                        type="number"
+                        min="1"
+                        [(ngModel)]="producto.cantidad">
+
+                    </td>
+
+                    <td>
+
+                        {{ producto.precio * producto.cantidad | currencyCop }}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                        (click)="eliminarProducto(producto.id)">
+
+                            Eliminar
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <h3>
+
+            Total:
+
+            {{ obtenerTotal() | currencyCop }}
+
+        </h3>
+
+        <button
+        (click)="vaciarCarrito()">
+
+            Vaciar carrito
+
+        </button>
+
+        <button
+        (click)="checkout()"
+        [disabled]="carrito.length===0">
+
+            Proceder al pago
+
+        </button>
+
+    </div>
+
+    <div *ngIf="carrito.length===0">
+
+        <h3>
+
+            Tu carrito está vacío.
+
+        </h3>
+
+        <a routerLink="/catalog">
+
+            Ir al catálogo
+
+        </a>
+
+    </div>
+
+</div>
