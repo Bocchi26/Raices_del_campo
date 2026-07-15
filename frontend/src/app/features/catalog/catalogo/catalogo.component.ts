@@ -1,11 +1,16 @@
 ﻿// catalogo.component.ts: Componente de listado del catalogo de productos con filtros
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProductService } from '@services/product.service';
 import { CategoryService } from '@services/category.service';
 import { CartService } from '@services/cart.service';
+import { CardProductoComponent } from '../../../shared/components/card-producto/card-producto.component';
 
 @Component({
   selector: 'app-catalogo',
+  standalone: true,
+  imports: [CommonModule, FormsModule, CardProductoComponent],
   templateUrl: './catalogo.component.html'
 })
 export class CatalogoComponent implements OnInit {

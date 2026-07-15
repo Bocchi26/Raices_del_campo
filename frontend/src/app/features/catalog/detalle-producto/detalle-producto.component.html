@@ -6,7 +6,7 @@
   <p>{{ producto.descripcion }}</p>
   <p><strong>Origen:</strong> {{ producto.origen }}</p>
   <p><strong>Unidad:</strong> {{ producto.unidadMedida }}</p>
-  <p><strong>Precio:</strong> {{ producto.precio | currency }}</p>
+  <p><strong>Precio:</strong> {{ producto.precio | currency:'COP':'symbol':'1.0-0' }}</p>
   <p><strong>Stock disponible:</strong> {{ producto.stock }}</p>
 
   <div class="selector">

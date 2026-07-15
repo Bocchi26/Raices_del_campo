@@ -1,8 +1,11 @@
 ﻿// card-producto.component.ts: Tarjeta de producto reutilizable para grillas del catalogo
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-card-producto',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './card-producto.component.html',
   styleUrls: ['./card-producto.component.scss']
 })

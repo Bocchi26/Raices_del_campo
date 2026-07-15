@@ -29,7 +29,7 @@
 
                     <td>
 
-                        {{ producto.precio | currencyCop }}
+                        {{ producto.precio | currency:'COP':'symbol':'1.0-0' }}
 
                     </td>
 
@@ -44,7 +44,7 @@
 
                     <td>
 
-                        {{ producto.precio * producto.cantidad | currencyCop }}
+                        {{ producto.precio * producto.cantidad | currency:'COP':'symbol':'1.0-0' }}
 
                     </td>
 
@@ -69,7 +69,7 @@
 
             Total:
 
-            {{ obtenerTotal() | currencyCop }}
+            {{ obtenerTotal() | currency:'COP':'symbol':'1.0-0' }}
 
         </h3>
 

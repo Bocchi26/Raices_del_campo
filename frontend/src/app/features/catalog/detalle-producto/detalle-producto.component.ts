@@ -1,11 +1,15 @@
 ﻿// detalle-producto.component.ts: Componente de ficha tecnica detallada del producto
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '@services/product.service';
 import { CartService } from '@services/cart.service';
 
 @Component({
 selector: 'app-detalle-producto',
+standalone: true,
+imports: [CommonModule, FormsModule],
 templateUrl: './detalle-producto.component.html'
 })
 export class DetalleProductoComponent implements OnInit {
@@ -21,7 +25,7 @@ constructor(
 ) {}
 
 ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
     this.productService.getProductById(id).subscribe({
         next: (data) => this.producto = data,

@@ -1,6 +1,10 @@
 {
 "compileOnSave": false,
 "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@services/*": ["src/app/services/*"]
+    },
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "bundler",

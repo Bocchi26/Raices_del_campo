@@ -1,12 +1,13 @@
 ﻿// carrito.component.ts: Componente del carrito de compras (items, cantidades, totales)
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
 selector: 'app-carrito',
 standalone: true,
-imports: [CommonModule, RouterModule],
+imports: [CommonModule, FormsModule, RouterModule],
 templateUrl: './carrito.component.html',
 styleUrls: ['./carrito.component.scss']
 })

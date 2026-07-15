@@ -1,12 +1,4 @@
 ﻿<!-- catalogo.component.html: Template del catalogo de productos -->
-<div class="lista-productos">
-  <app-card-producto 
-    *ngFor="let prod of productos" 
-    [producto]="prod"
-    (agregar)="manejarAgregarAlCarrito($event)">
-  </app-card-producto>
-</div>
-
 
 <div class="catalog-controls">
   <input type="text" [(ngModel)]="busqueda" (input)="aplicarFiltroBusqueda()" placeholder="Buscar por nombre...">

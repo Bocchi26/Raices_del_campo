@@ -1,1 +1,4 @@
 ﻿# .gitignore: Archivos y carpetas a ignorar por Git en el frontend Angular
+/node_modules
+/.angular
+/dist
