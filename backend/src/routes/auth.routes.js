@@ -4,6 +4,7 @@ const router = express.Router();
 
 const authController = require('../controllers/auth.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
+const roleMiddleware = require('../middlewares/role.middleware');
 
 
 router.post('/register', authController.register);
@@ -18,6 +19,17 @@ router.get('/profile', authMiddleware, (req, res) => {
     });
 
 });
+
+router.get(
+    '/admin-test',
+    authMiddleware,
+    roleMiddleware('administrador'),
+    (req, res) => {
+        res.json({
+            mensaje: 'Bienvenido administrador'
+        });
+    }
+);
 
 
 module.exports = router;
