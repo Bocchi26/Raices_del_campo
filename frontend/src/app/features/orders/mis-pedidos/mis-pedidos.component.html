@@ -1,1 +1,40 @@
 ﻿<!-- mis-pedidos.component.html: Template del historial de pedidos -->
+<div class="mis-pedidos-container">
+  <h1>Mis pedidos</h1>
+
+  <div class="mis-pedidos-loading" *ngIf="cargando">Cargando tus pedidos...</div>
+
+  <div class="mis-pedidos-error" *ngIf="error">{{ error }}</div>
+
+  <div class="mis-pedidos-vacio" *ngIf="!cargando && !error && pedidos.length === 0">
+    Todavía no tienes pedidos.
+  </div>
+
+  <div class="mis-pedidos-lista" *ngIf="!cargando && pedidos.length > 0">
+    <div class="pedido-tarjeta" *ngFor="let pedido of pedidos">
+
+      <div class="pedido-tarjeta-header">
+        <span class="pedido-numero">Pedido #{{ pedido.id_pedido }}</span>
+        <span class="pedido-estado" [ngClass]="claseEstado(pedido.estado)">
+          {{ etiquetaEstado(pedido.estado) }}
+        </span>
+      </div>
+
+      <div class="pedido-tarjeta-body">
+        <div class="pedido-dato">
+          <span class="pedido-dato-label">Fecha de entrega:</span>
+          <span>{{ pedido.fecha_entrega | date:'d MMM y' }}</span>
+        </div>
+        <div class="pedido-dato">
+          <span class="pedido-dato-label">Total:</span>
+          <span>{{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <div class="pedido-tarjeta-footer">
+        <a [routerLink]="['/pedidos', pedido.id_pedido]">Ver detalle</a>
+      </div>
+
+    </div>
+  </div>
+</div>

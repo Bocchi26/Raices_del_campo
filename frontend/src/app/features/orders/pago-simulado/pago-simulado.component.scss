@@ -1,1 +1,55 @@
 ﻿// pago-simulado.component.scss: Estilos de la pantalla de pago simulado
+.pago-metodos {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.pago-metodo-opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.pago-metodo-opcion:hover {
+  border-color: #999;
+}
+
+.pago-metodo-seleccionado {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+}
+
+.pago-metodo-icono {
+  font-size: 28px;
+}
+
+.pago-confirmacion {
+  text-align: center;
+  padding: 32px;
+}
+
+.pago-confirmacion-icono {
+  font-size: 48px;
+}
+
+.pago-confirmacion-detalle {
+  margin: 24px auto;
+  max-width: 300px;
+  text-align: left;
+}
+
+.pago-confirmacion-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}

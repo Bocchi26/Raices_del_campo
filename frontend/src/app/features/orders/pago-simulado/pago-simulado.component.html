@@ -1,1 +1,74 @@
 ﻿<!-- pago-simulado.component.html: Template de la pantalla de pago simulado -->
+<div class="pago-container" *ngIf="!cargandoPedido; else loadingTpl">
+
+  <!-- Pantalla de confirmación (después de pagar) -->
+  <div class="pago-confirmacion" *ngIf="pagoConfirmado; else formularioPagoTpl">
+    <div class="pago-confirmacion-icono">✅</div>
+    <h1>¡Gracias por tu compra!</h1>
+    <p>Tu pago fue procesado exitosamente.</p>
+
+    <div class="pago-confirmacion-detalle">
+      <div class="pago-confirmacion-item">
+        <span>Referencia de pago:</span>
+        <strong>{{ referenciaPago }}</strong>
+      </div>
+      <div class="pago-confirmacion-item">
+        <span>Estado del pedido:</span>
+        <strong>En preparación</strong>
+      </div>
+    </div>
+
+    <button class="pago-btn-mis-pedidos" (click)="irAMisPedidos()">
+      Ir a Mis pedidos
+    </button>
+  </div>
+
+  <!-- Formulario de pago -->
+  <ng-template #formularioPagoTpl>
+    <h1>Resumen del pedido</h1>
+
+    <div class="pago-resumen" *ngIf="pedido">
+      <div class="pago-item" *ngFor="let item of pedido.items">
+        <span class="pago-item-nombre">{{ item.nombre }}</span>
+        <span class="pago-item-cantidad">x{{ item.cantidad }}</span>
+        <span class="pago-item-subtotal">
+          {{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </span>
+      </div>
+
+      <div class="pago-total">
+        <strong>Total a pagar: {{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+    </div>
+
+    <h2>Selecciona un método de pago</h2>
+
+    <div class="pago-metodos">
+      <button
+        *ngFor="let metodo of metodosPago"
+        type="button"
+        class="pago-metodo-opcion"
+        [class.pago-metodo-seleccionado]="metodoSeleccionado === metodo.valor"
+        (click)="seleccionarMetodo(metodo.valor)"
+      >
+        <span class="pago-metodo-icono">{{ metodo.icono }}</span>
+        <span class="pago-metodo-etiqueta">{{ metodo.etiqueta }}</span>
+      </button>
+    </div>
+
+    <div class="pago-error" *ngIf="error">{{ error }}</div>
+
+    <button
+      class="pago-confirmar-btn"
+      (click)="confirmarPago()"
+      [disabled]="enviandoPago"
+    >
+      {{ enviandoPago ? 'Procesando...' : 'Confirmar pago' }}
+    </button>
+  </ng-template>
+
+</div>
+
+<ng-template #loadingTpl>
+  <div class="pago-loading">Cargando información del pedido...</div>
+</ng-template>

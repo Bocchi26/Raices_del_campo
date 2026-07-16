@@ -1,4 +1,21 @@
-﻿# .gitignore: Archivos y carpetas a ignorar por Git en el frontend Angular
-node_modules/
-.angular/
-dist/
+# Dependencias
+/node_modules
+
+# Angular build output
+/dist
+/.angular/cache
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+
+# Logs
+npm-debug.log

@@ -1,1 +1,65 @@
 ﻿// mis-pedidos.component.scss: Estilos del historial de pedidos
+.mis-pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pedido-tarjeta {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+}
+
+.pedido-tarjeta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pedido-numero {
+  font-weight: bold;
+}
+
+.pedido-estado {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+}
+
+.estado-amarillo { background-color: #f5b400; color: #333; }
+.estado-azul { background-color: #1976d2; }
+.estado-naranja { background-color: #f57c00; }
+.estado-verde { background-color: #2e7d32; }
+.estado-rojo { background-color: #c62828; }
+.estado-default { background-color: #999; }
+
+.pedido-tarjeta-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.pedido-dato {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pedido-dato-label {
+  color: #666;
+}
+
+.pedido-tarjeta-footer a {
+  color: #2e7d32;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pedido-tarjeta-footer a:hover {
+  text-decoration: underline;
+}
