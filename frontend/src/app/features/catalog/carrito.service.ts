@@ -1,9 +1,4 @@
-﻿// carrito.service.ts: Servicio Angular que mantiene el estado del carrito en memoria (sin BD)
-// carrito.service.ts
-// ⚠️ VERSIÓN TEMPORAL — implementada por Sebastian mientras [nombre del compañero]
-// desarrolla la versión definitiva. Mismos métodos que necesita el checkout.
-// TODO: Reemplazar cuando el servicio real esté listo (tarjeta de Trello: "...").
-
+// carrito.service.ts: Servicio Angular que mantiene el estado del carrito en memoria (sin BD)
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -14,16 +9,87 @@ export interface ItemCarrito {
   cantidad: number;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class CarritoService {
-  private items: ItemCarrito[] = [
-    // Datos de prueba para poder probar el checkout mientras no hay carrito real
-    { id_producto: 1, nombre: 'Producto de prueba', precio_venta: 10000, cantidad: 2 }
-  ];
 
-  private itemsSubject = new BehaviorSubject<ItemCarrito[]>(this.items);
+  private carrito: ItemCarrito[] = [];
 
+  private carritoSubject = new BehaviorSubject<ItemCarrito[]>([]);
+  carrito$ = this.carritoSubject.asObservable();
+
+  private contadorItems = new BehaviorSubject<number>(0);
+  contadorItems$ = this.contadorItems.asObservable();
+
+  constructor() {}
+
+  // Método que espera checkout.component.ts
   obtenerItemsCarrito(): Observable<ItemCarrito[]> {
-    return this.itemsSubject.asObservable();
+    return this.carrito$;
+  }
+
+  agregarProducto(producto: Omit<ItemCarrito, 'cantidad'>, cantidad: number): void {
+    const existe = this.carrito.find(
+      item => item.id_producto === producto.id_producto
+    );
+
+    if (existe) {
+      existe.cantidad += cantidad;
+    } else {
+      this.carrito.push({
+        ...producto,
+        cantidad
+      });
+    }
+
+    this.actualizarEstado();
+  }
+
+  quitarProducto(id_producto: number): void {
+    this.carrito = this.carrito.filter(
+      item => item.id_producto !== id_producto
+    );
+
+    this.actualizarEstado();
+  }
+
+  actualizarCantidad(id_producto: number, cantidad: number): void {
+    const producto = this.carrito.find(
+      item => item.id_producto === id_producto
+    );
+
+    if (producto) {
+      producto.cantidad = cantidad;
+    }
+
+    this.actualizarEstado();
+  }
+
+  calcularTotal(): number {
+    return this.carrito.reduce(
+      (total, item) => total + (item.precio_venta * item.cantidad),
+      0
+    );
+  }
+
+  obtenerCarrito(): ItemCarrito[] {
+    return this.carrito;
+  }
+
+  vaciarCarrito(): void {
+    this.carrito = [];
+    this.actualizarEstado();
+  }
+
+  private actualizarEstado(): void {
+    this.carritoSubject.next(this.carrito);
+
+    const totalItems = this.carrito.reduce(
+      (total, item) => total + item.cantidad,
+      0
+    );
+
+    this.contadorItems.next(totalItems);
   }
 }

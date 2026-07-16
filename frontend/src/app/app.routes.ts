@@ -1,43 +1,29 @@
-﻿import { Routes } from '@angular/router';
-
+import { Routes } from '@angular/router';
 import { authRoutes } from './features/auth/auth.routes';
-
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-
 import { HomeComponent } from './features/home/home.component';
 
-import { authGuard } from './core/guards/auth.guard';
-
-
-
 export const routes: Routes = [
-
-
   {
-    path:'auth',
+    path: 'auth',
     children: authRoutes
   },
-
-
   {
-    path:'',
+    path: '',
     component: MainLayoutComponent,
-    canActivate:[authGuard],
-    children:[
-
+    children: [
       {
-        path:'',
-        component:HomeComponent
+        path: '',
+        component: HomeComponent
+      },
+      {
+        path: 'catalog',
+        loadChildren: () => import('./features/catalog/catalog.routes').then(m => m.CATALOG_ROUTES)
       }
-
     ]
   },
-
-
   {
-    path:'**',
-    redirectTo:''
+    path: '**',
+    redirectTo: ''
   }
-
-
 ];

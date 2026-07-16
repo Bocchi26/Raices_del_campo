@@ -1,4 +1,4 @@
-﻿// db.js: Configuracion del pool de conexiones a PostgreSQL con pg
+// db.js: Configuracion del pool de conexiones a PostgreSQL con pg
 const { Pool } = require('pg');
 const env = require('./env');
 
@@ -19,6 +19,5 @@ pool.connect()
         console.error('❌ Error al conectar con PostgreSQL');
         console.error(error.message);
     });
-
 
 module.exports = pool;
