@@ -1,5 +1,6 @@
-﻿// order.service.js: Logica de creacion de pedidos, validacion de stock y cancelaciones
-const pool = require('../config/db'); // tu pool de pg
+// order.service.js
+const pool = require('../config/db'); // ⚠️ misma duda que en el repository: confirmar si es 'database' o 'db'
+const orderRepository = require('../repositories/order.repository');
 const productRepository = require('../repositories/product.repository');
 
 class BusinessError extends Error {
@@ -7,6 +8,53 @@ class BusinessError extends Error {
     super(message);
     this.isBusinessError = true;
   }
+}
+
+class ForbiddenError extends Error {
+  constructor(message) {
+    super(message);
+    this.isForbidden = true;
+  }
+}
+
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.isNotFound = true;
+  }
+}
+
+async function obtenerTodosLosPedidos(estado) {
+  return await orderRepository.findAll(estado);
+}
+
+async function cambiarEstadoPedido(idPedido, nuevoEstado) {
+  const pedido = await orderRepository.findById(idPedido);
+
+  if (!pedido) {
+    throw new NotFoundError('Pedido no encontrado.');
+  }
+
+  const estadoActual = pedido.estado;
+
+  const transicionesValidas = {
+    en_preparacion: 'en_camino',
+    en_camino: 'entregado'
+  };
+
+  if (transicionesValidas[estadoActual] !== nuevoEstado) {
+    throw new BusinessError(
+      `No se puede cambiar el estado de "${estadoActual}" a "${nuevoEstado}".`
+    );
+  }
+
+  const pedidoActualizado = await orderRepository.updateStatus(idPedido, nuevoEstado);
+
+  if (nuevoEstado === 'entregado') {
+    await orderRepository.registrarFechaEntrega(idPedido);
+  }
+
+  return pedidoActualizado;
 }
 
 async function crearPedido({ id_usuario, items, fecha_entrega, franja_horaria }) {
@@ -39,15 +87,9 @@ async function crearPedido({ id_usuario, items, fecha_entrega, franja_horaria })
       const subtotal = precio_unitario * cantidad;
       total += subtotal;
 
-      detalles.push({
-        id_producto,
-        cantidad,
-        precio_unitario,
-        subtotal
-      });
+      detalles.push({ id_producto, cantidad, precio_unitario, subtotal });
     }
 
-    // Insertar el pedido
     const pedidoResult = await client.query(
       `INSERT INTO pedidos (id_usuario, fecha_entrega, franja_horaria, total, estado, creado_en)
        VALUES ($1, $2, $3, $4, 'pendiente_pago', NOW())
@@ -57,7 +99,6 @@ async function crearPedido({ id_usuario, items, fecha_entrega, franja_horaria })
 
     const id_pedido = pedidoResult.rows[0].id_pedido;
 
-    // Insertar cada detalle con el precio como snapshot
     for (const detalle of detalles) {
       await client.query(
         `INSERT INTO detalle_pedidos (id_pedido, id_producto, cantidad, precio_unitario, subtotal)
@@ -78,44 +119,14 @@ async function crearPedido({ id_usuario, items, fecha_entrega, franja_horaria })
   }
 }
 
-module.exports = { crearPedido };
-class ForbiddenError extends Error {
-  constructor(message) {
-    super(message);
-    this.isForbidden = true;
-  }
-}
-
-class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    this.isNotFound = true;
-  }
-}
-
 // GET /api/orders/my
 async function obtenerPedidosPorUsuario(id_cliente) {
-  const result = await pool.query(
-    `SELECT id_pedido, fecha_entrega, franja_horaria, total, estado, creado_en
-     FROM pedidos
-     WHERE id_cliente = $1
-     ORDER BY creado_en DESC`,
-    [id_cliente]
-  );
-
-  return result.rows;
+  return await orderRepository.findByClient(id_cliente);
 }
 
 // GET /api/orders/:id
 async function obtenerDetallePedido(id_pedido, id_cliente) {
-  const pedidoResult = await pool.query(
-    `SELECT id_pedido, id_cliente, fecha_entrega, franja_horaria, total, estado, creado_en
-     FROM pedidos
-     WHERE id_pedido = $1`,
-    [id_pedido]
-  );
-
-  const pedido = pedidoResult.rows[0];
+  const pedido = await orderRepository.findById(id_pedido);
 
   if (!pedido) {
     return null;
@@ -124,16 +135,6 @@ async function obtenerDetallePedido(id_pedido, id_cliente) {
   if (pedido.id_cliente !== id_cliente) {
     throw new ForbiddenError('No tienes permiso para ver este pedido.');
   }
-
-  const detalleResult = await pool.query(
-    `SELECT dp.id_producto, p.nombre, dp.cantidad, dp.precio_unitario, dp.subtotal
-     FROM detalle_pedidos dp
-     JOIN productos p ON p.id_producto = dp.id_producto
-     WHERE dp.id_pedido = $1`,
-    [id_pedido]
-  );
-
-  pedido.items = detalleResult.rows;
 
   return pedido;
 }
@@ -170,13 +171,11 @@ async function cancelarPedido(id_pedido, id_cliente) {
       );
     }
 
-    // Cambiar estado a cancelado
     await client.query(
       `UPDATE pedidos SET estado = 'cancelado' WHERE id_pedido = $1`,
       [id_pedido]
     );
 
-    // Obtener el detalle del pedido para restaurar stock
     const detalleResult = await client.query(
       `SELECT id_producto, cantidad
        FROM detalle_pedidos
@@ -185,7 +184,6 @@ async function cancelarPedido(id_pedido, id_cliente) {
     );
 
     for (const item of detalleResult.rows) {
-      // Restaurar stock
       await client.query(
         `UPDATE productos
          SET stock_disponible = stock_disponible + $1
@@ -193,7 +191,6 @@ async function cancelarPedido(id_pedido, id_cliente) {
         [item.cantidad, item.id_producto]
       );
 
-      // Registrar movimiento de inventario
       await client.query(
         `INSERT INTO inventario_movimientos (id_producto, tipo, cantidad, id_pedido, creado_en)
          VALUES ($1, 'devolucion', $2, $3, NOW())`,
@@ -212,6 +209,8 @@ async function cancelarPedido(id_pedido, id_cliente) {
 }
 
 module.exports = {
+  obtenerTodosLosPedidos,
+  cambiarEstadoPedido,
   crearPedido,
   obtenerPedidosPorUsuario,
   obtenerDetallePedido,

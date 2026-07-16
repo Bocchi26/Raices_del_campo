@@ -1,1 +1,181 @@
 ﻿<!-- gestion-productos.component.html: Template de gestion de productos -->
+<div class="contenedor">
+
+    <div class="encabezado">
+
+        <h2>Gestión de Productos</h2>
+
+        <button (click)="crearNuevoProducto()">
+            Crear producto
+        </button>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio Venta</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr *ngFor="let producto of productos">
+
+                <td>{{ producto.nombre }}</td>
+
+                <td>{{ producto.nombre_categoria }}</td>
+
+                <td>${{ producto.precio_venta }}</td>
+
+                <td>{{ producto.stock_disponible }}</td>
+
+                <td>
+
+                    <span
+                        [class.activo]="producto.activo"
+                        [class.inactivo]="!producto.activo">
+
+                        {{ producto.activo ? 'Activo' : 'Inactivo' }}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="editar"
+                        (click)="editarProducto(producto)">
+
+                        Editar
+
+                    </button>
+
+                    <button
+                        class="estado"
+                        (click)="cambiarEstado(producto)">
+
+                        {{ producto.activo ? 'Desactivar' : 'Activar' }}
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <div
+        class="modal"
+        *ngIf="mostrarFormulario">
+
+        <div class="formulario">
+
+            <h3>
+
+                {{ editando ? 'Editar Producto' : 'Crear Producto' }}
+
+            </h3>
+
+            <label>Nombre</label>
+
+            <input
+                type="text"
+                [(ngModel)]="producto.nombre">
+
+            <label>Descripción</label>
+
+            <textarea
+                [(ngModel)]="producto.descripcion">
+
+            </textarea>
+
+            <label>Categoría</label>
+
+            <select
+                [(ngModel)]="producto.id_categoria">
+
+                <option
+                    *ngFor="let categoria of categorias"
+                    [value]="categoria.id_categoria">
+
+                    {{ categoria.nombre }}
+
+                </option>
+
+            </select>
+
+            <label>Unidad de Medida</label>
+
+            <input
+                type="text"
+                [(ngModel)]="producto.unidad_medida">
+
+            <label>Origen</label>
+
+            <input
+                type="text"
+                [(ngModel)]="producto.origen">
+
+            <label>Precio Compra</label>
+
+            <input
+                type="number"
+                [(ngModel)]="producto.precio_compra_kg">
+
+            <label>Precio Venta</label>
+
+            <input
+                type="number"
+                [(ngModel)]="producto.precio_venta">
+
+            <label>Stock Inicial</label>
+
+            <input
+                type="number"
+                [(ngModel)]="producto.stock_disponible">
+
+            <label>Imagen URL</label>
+
+            <input
+                type="text"
+                [(ngModel)]="producto.imagen_url">
+
+            <div class="acciones">
+
+                <button
+                    class="guardar"
+                    (click)="guardarProducto()">
+
+                    {{ editando ? 'Actualizar' : 'Guardar' }}
+
+                </button>
+
+                <button
+                    class="cancelar"
+                    (click)="cerrarFormulario()">
+
+                    Cancelar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

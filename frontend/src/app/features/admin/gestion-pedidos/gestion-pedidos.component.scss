@@ -1,1 +1,85 @@
 ﻿// gestion-pedidos.component.scss: Estilos de gestion de pedidos
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+
+}
+
+th,td{
+
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+
+}
+
+th{
+
+    background:#2E7D32;
+    color:white;
+
+}
+
+.estado{
+
+    color:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:13px;
+
+}
+
+.pendiente_pago{
+
+    background:#FF9800;
+
+}
+
+.en_preparacion{
+
+    background:#2196F3;
+
+}
+
+.en_camino{
+
+    background:#9C27B0;
+
+}
+
+.entregado{
+
+    background:#4CAF50;
+
+}
+
+.cancelado{
+
+    background:#F44336;
+
+}
+
+button{
+
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#2E7D32;
+    color:white;
+
+}
+
+button:hover{
+
+    opacity:.9;
+
+}
+
+.filtro{
+
+    margin-bottom:20px;
+
+}

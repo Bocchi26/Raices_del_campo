@@ -1,5 +1,5 @@
-﻿// order.repository.js: Consultas SQL sobre las tablas pedidos y detalle_pedidos
-const pool = require('../config/db');
+// order.repository.js
+const pool = require('../config/database'); // ⚠️ Ver nota abajo sobre esta ruta
 
 // Inserta un pedido y retorna el id generado
 async function createOrder(orderData, client) {
@@ -31,6 +31,38 @@ async function createOrderDetail(detailData, client) {
   );
 
   return result.rows[0].id_detalle;
+}
+
+// Retorna todos los pedidos (opcionalmente filtrados por estado), con datos del cliente
+async function findAll(estado) {
+  let query = `
+    SELECT
+      p.id_pedido,
+      p.fecha_pedido,
+      p.fecha_entrega,
+      p.estado,
+      p.total,
+      c.id_cliente,
+      c.nombre,
+      c.apellido,
+      c.email
+    FROM pedidos p
+    INNER JOIN clientes c
+      ON p.id_cliente = c.id_cliente
+  `;
+
+  const values = [];
+
+  if (estado) {
+    query += ` WHERE p.estado = $1`;
+    values.push(estado);
+  }
+
+  query += ` ORDER BY p.fecha_pedido DESC`;
+
+  const { rows } = await pool.query(query, values);
+
+  return rows;
 }
 
 // Retorna todos los pedidos de un cliente, ordenados por fecha descendente
@@ -78,16 +110,31 @@ async function findById(id_pedido) {
 async function updateStatus(id_pedido, estado, client) {
   const db = client || pool;
 
-  await db.query(
-    `UPDATE pedidos SET estado = $1 WHERE id_pedido = $2`,
+  const { rows } = await db.query(
+    `UPDATE pedidos SET estado = $1 WHERE id_pedido = $2 RETURNING *`,
     [estado, id_pedido]
+  );
+
+  return rows[0];
+}
+
+// Registra la fecha real de entrega de un pedido
+async function registrarFechaEntrega(id_pedido) {
+  await pool.query(
+    `UPDATE entregas
+     SET fecha_entrega_real = NOW(),
+         estado_entrega = 'entregada'
+     WHERE id_pedido = $1`,
+    [id_pedido]
   );
 }
 
 module.exports = {
   createOrder,
   createOrderDetail,
+  findAll,
   findByClient,
   findById,
-  updateStatus
+  updateStatus,
+  registrarFechaEntrega
 };
