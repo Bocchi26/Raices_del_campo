@@ -1,6 +1,7 @@
-﻿const app = require('./app');
+const app = require('./app');
 const env = require('./config/env');
+require('./config/db');
 
-app.listen(env.port, () => {
-  console.log(`Servidor corriendo en el puerto ${env.port}`);
+app.listen(env.PORT, () => {
+    console.log(`🚀 Servidor ejecutándose en el puerto ${env.PORT}`);
 });
