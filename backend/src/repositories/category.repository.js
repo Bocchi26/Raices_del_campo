@@ -1,9 +1,9 @@
-﻿const db = require('../config/db'); // Asumiendo conexión pg
+﻿const db = require('../config/db');
 
 const findAll = async () => {
-const query = 'SELECT * FROM categorias';
-const { rows } = await db.query(query);
-return rows;
+  const query = 'SELECT id_categoria AS id, nombre, descripcion FROM categorias ORDER BY nombre ASC';
+  const { rows } = await db.query(query);
+  return rows;
 };
 
 module.exports = { findAll };

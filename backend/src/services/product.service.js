@@ -1,23 +1,17 @@
 ﻿const productRepo = require('../repositories/product.repository');
 
-const getProducts = async (req, res) => {
-  try {
-    const { categoria } = req.query;
-    const productos = await productRepo.findAll(categoria);
-    res.json(productos);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos' });
-  }
+const getProducts = async (categoriaId) => {
+  return productRepo.findAll(categoriaId);
 };
 
-const getProductById = async (req, res) => {
-  try {
-    const producto = await productRepo.findById(req.params.id);
-    if (!producto) return res.status(404).json({ message: 'Producto no encontrado' });
-    res.json(producto);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto' });
+const getProductById = async (id) => {
+  const producto = await productRepo.findById(id);
+  if (!producto) {
+    const error = new Error('Producto no encontrado');
+    error.status = 404;
+    throw error;
   }
+  return producto;
 };
 
 module.exports = { getProducts, getProductById };

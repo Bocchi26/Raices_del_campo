@@ -1,7 +1,6 @@
-﻿// server.js: Punto de entrada del servidor, levanta Express en el puerto configurado
-const productRoutes = require("./routes/product.routes");
-const categoryRoutes = require("./routes/category.routes");
+﻿const app = require('./app');
+const env = require('./config/env');
 
-app.use("/api/products", productRoutes);
-
-app.use("/api/categories", categoryRoutes);
+app.listen(env.port, () => {
+  console.log(`Servidor corriendo en el puerto ${env.port}`);
+});
