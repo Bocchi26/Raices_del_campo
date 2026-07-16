@@ -1,1 +1,60 @@
 ﻿// detalle-pedido.component.scss: Estilos del detalle de pedido
+.detalle-info-general {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.detalle-dato {
+  display: flex;
+  gap: 8px;
+}
+
+.detalle-dato-label {
+  color: #666;
+  min-width: 140px;
+}
+
+.detalle-productos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detalle-producto-item {
+  display: grid;
+  grid-template-columns: 2fr 0.5fr 1fr 1fr;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detalle-total {
+  text-align: right;
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+}
+
+.detalle-cancelar-btn {
+  background-color: #c62828;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.detalle-cancelar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.detalle-volver-btn {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 0;
+}

@@ -1,1 +1,61 @@
 ﻿<!-- detalle-pedido.component.html: Template del detalle de pedido -->
+<div class="detalle-pedido-container">
+
+  <div class="detalle-loading" *ngIf="cargando">Cargando detalle del pedido...</div>
+
+  <div class="detalle-error" *ngIf="error && !cargando">{{ error }}</div>
+
+  <div class="detalle-contenido" *ngIf="pedido && !cargando">
+
+    <button class="detalle-volver-btn" (click)="volverAMisPedidos()">← Volver a Mis pedidos</button>
+
+    <h1>Pedido #{{ pedido.id_pedido }}</h1>
+
+    <div class="detalle-info-general">
+      <div class="detalle-dato">
+        <span class="detalle-dato-label">Estado:</span>
+        <span>{{ pedido.estado }}</span>
+      </div>
+      <div class="detalle-dato">
+        <span class="detalle-dato-label">Fecha de entrega:</span>
+        <span>{{ pedido.fecha_entrega | date:'d MMM y' }}</span>
+      </div>
+      <div class="detalle-dato" *ngIf="pedido.metodo_pago">
+        <span class="detalle-dato-label">Método de pago:</span>
+        <span>{{ pedido.metodo_pago }}</span>
+      </div>
+    </div>
+
+    <h2>Productos</h2>
+
+    <div class="detalle-productos">
+      <div class="detalle-producto-item" *ngFor="let item of pedido.items">
+        <span class="detalle-producto-nombre">{{ item.nombre }}</span>
+        <span class="detalle-producto-cantidad">x{{ item.cantidad }}</span>
+        <span class="detalle-producto-precio">
+          {{ item.precio_unitario | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </span>
+        <span class="detalle-producto-subtotal">
+          {{ item.subtotal | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="detalle-total">
+      <strong>Total: {{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+    </div>
+
+    <div class="detalle-error-cancelar" *ngIf="error">{{ error }}</div>
+
+    <button
+      class="detalle-cancelar-btn"
+      *ngIf="puedeCancelar()"
+      (click)="cancelarPedido()"
+      [disabled]="cancelando"
+    >
+      {{ cancelando ? 'Cancelando...' : 'Cancelar pedido' }}
+    </button>
+
+  </div>
+
+</div>

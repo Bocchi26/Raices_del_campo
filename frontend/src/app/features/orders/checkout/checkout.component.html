@@ -1,1 +1,95 @@
 ﻿<!-- checkout.component.html: Template del formulario de checkout -->
+<div class="checkout-container" *ngIf="!cargandoCarrito; else loadingTpl">
+
+  <h1>Resumen del pedido</h1>
+
+  <!-- Lista de productos -->
+  <div class="checkout-resumen">
+    <div class="checkout-item" *ngFor="let item of items">
+      <span class="checkout-item-nombre">{{ item.nombre }}</span>
+      <span class="checkout-item-cantidad">x{{ item.cantidad }}</span>
+      <span class="checkout-item-subtotal">
+        {{ item.precio_venta * item.cantidad | currency:'COP':'symbol-narrow':'1.0-0' }}
+      </span>
+    </div>
+
+    <div class="checkout-total">
+      <strong>Total: {{ total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+    </div>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="confirmarPedido()">
+
+    <!-- Fecha de entrega -->
+    <div class="checkout-campo">
+      <label for="fecha-entrega">Fecha de entrega</label>
+      <input
+        id="fecha-entrega"
+        type="date"
+        [min]="fechaMinima"
+        formControlName="fecha_entrega"
+      />
+      <span
+        class="checkout-error-campo"
+        *ngIf="checkoutForm.get('fecha_entrega')?.touched && checkoutForm.get('fecha_entrega')?.invalid"
+      >
+        Selecciona una fecha de entrega.
+      </span>
+    </div>
+
+    <!-- Franja horaria -->
+    <div class="checkout-campo">
+      <label>Franja horaria</label>
+      <div class="checkout-franja-opciones">
+        <label>
+          <input type="radio" formControlName="franja_horaria" value="mañana" />
+          Mañana
+        </label>
+        <label>
+          <input type="radio" formControlName="franja_horaria" value="tarde" />
+          Tarde
+        </label>
+      </div>
+      <span
+        class="checkout-error-campo"
+        *ngIf="checkoutForm.get('franja_horaria')?.touched && checkoutForm.get('franja_horaria')?.invalid"
+      >
+        Selecciona una franja horaria.
+      </span>
+    </div>
+
+    <!-- Dirección de entrega -->
+    <div class="checkout-campo">
+      <label for="direccion">Dirección de entrega</label>
+
+      <div *ngIf="!editandoDireccion" class="checkout-direccion-display">
+        <span>{{ checkoutForm.get('direccion')?.value || 'Sin dirección registrada' }}</span>
+        <button type="button" (click)="habilitarEdicionDireccion()">Modificar</button>
+      </div>
+
+      <div *ngIf="editandoDireccion" class="checkout-direccion-edicion">
+        <input
+          id="direccion"
+          type="text"
+          formControlName="direccion"
+        />
+        <button type="button" (click)="guardarDireccion()">Guardar</button>
+      </div>
+    </div>
+
+    <div class="checkout-error" *ngIf="error">{{ error }}</div>
+
+    <button
+      type="submit"
+      class="checkout-confirmar-btn"
+      [disabled]="enviando"
+    >
+      {{ enviando ? 'Procesando...' : 'Confirmar pedido' }}
+    </button>
+
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="checkout-loading">Cargando tu carrito...</div>
+</ng-template>
